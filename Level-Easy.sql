@@ -63,9 +63,19 @@ WHERE school NOT LIKE '%HS';
 SELECT * FROM airbnb_search_details WHERE property_type = 'Apartment' AND 
 room_type = 'Private room';
 
+13. Write a query that calculates the difference between the highest salaries found in the marketing and engineering departments. Output just the absolute difference in salaries?
 
-
-
+SELECT ABS(
+    (SELECT MAX(E.salary) 
+     FROM db_employee E 
+     JOIN db_dept D ON D.id = E.department_id
+     WHERE D.department = 'marketing')
+    -
+    (SELECT MAX(E.salary) 
+     FROM db_employee E 
+     JOIN db_dept D ON D.id = E.department_id
+     WHERE D.department = 'engineering')
+) AS salary_difference;
 
 
 
