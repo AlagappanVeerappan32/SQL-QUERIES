@@ -78,20 +78,59 @@ SELECT ABS(
 ) AS salary_difference;
 
 
+14.Total Revenue for Each Company? 
 
+SELECT company, SUM(revenue) as revenue FROM games
+GROUP BY company;
 
+15. Games Produced per Year with Average Revenue and Cost? 
 
+SELECT production_year, count(*) as count,  AVG(production_cost) as avg_cost, AVG(revenue) as avg_revenue FROM games
+GROUP BY production_year;
 
+16. Number of Profitable Games of Each Game Type  (i.e. the revenue was greater than the production cost).
 
+SELECT type, COUNT(*) as count FROM games
+WHERE revenue > production_cost
+GROUP BY type;
 
+17. Total Revenue per Game Type in PS2 and PS3 Systems
 
+SELECT type, systems, SUM(revenue) AS TOTAL_REVENUE FROM games
+WHERE systems IN ('PS2','PS3')
+GROUP BY type, systems;
 
+18. For all companies present in the table, obtain their names and the sum of gross profit over all years. (Assume that gross profit = revenue - cost of production). Name this column gross_profit_sum. Order the results by gross profit, in descending order.
 
+SELECT company, SUM(revenue - production_cost) AS gross_profit_sum 
+FROM games
+GROUP BY company
+ORDER BY gross_profit_sum desc;
 
+19. Obtain the yearly gross profit of each company. In other words, we want a report with the company name, the year, and the gross profit for that year. Order the report by company name and year.
 
+SELECT company, production_year, SUM(revenue - production_cost) AS gross_profit_sum 
+FROM games
+GROUP BY company, production_year
+ORDER BY company, production_year;
 
+20. For each company, select its name, the number of games it’s produced (as the number_of_games column), and the average cost of production (as the avg_cost column). Show only companies producing more than one game.
 
+SELECT company, COUNT(*) AS number_of_games, AVG(production_cost) AS avg_cost
+FROM games
+GROUP BY company
+HAVING number_of_games>1;
 
+21. We are interested in good games produced between 2000 and 2009. A good game is a profitable game with a rating higher than 6. For each company, show the company name, its total revenue from good games produced between 2000 and 2009 (as the revenue_sum column), and the number of good games it produced in this period (as the number_of_games column). Only show companies with good-game revenue over 4 000 000.
+
+SELECT company, 
+       SUM(revenue) AS revenue_sum, 
+       COUNT(*) AS number_of_games 
+FROM games
+WHERE (production_year BETWEEN 2000 AND 2009) 
+  AND rating > 6
+GROUP BY company
+HAVING SUM(revenue) > 4000000;
 
 
 
